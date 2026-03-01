@@ -1,0 +1,12 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Processed data
+*.parquet
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+
+# Exports
+exports/
