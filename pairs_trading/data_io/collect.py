@@ -19,6 +19,7 @@ import datetime as dt
 
 import pandas as pd
 import requests
+from io import StringIO
 
 
 WIKI_URL = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
@@ -29,27 +30,36 @@ def get_sp500_universe(replace_dot=True, user_agent="Mozilla/5.0", verbose=True)
     """
     Lädt die Liste der S&P 500 Ticker-Symbole von Wikipedia.
 
+    Implementierungsdetails:
+    - Der HTML-Inhalt wird explizit via requests.get geladen (inkl. User-Agent),
+      um Probleme mit pd.read_html(URL) und lxml-internem HTTP-Handling zu vermeiden.
+    - Anschließend wird pd.read_html auf dem HTML-String ausgeführt.
+    - Erwartet wird, dass die erste Tabelle die S&P-500-Liste enthält.
+
     Parameter:
     - replace_dot: wenn True, werden '.' durch '-' ersetzt (z. B. BRK.B -> BRK-B),
-      was gängigerweise mit Yahoo Symbolkonventionen kompatibel ist.
-    - user_agent: User-Agent Header für requests.get
-    - verbose: wenn True, werden Statusprints ausgegeben
+      kompatibel mit Yahoo-Symbolkonventionen.
+    - user_agent: User-Agent Header für den HTTP-Request.
+    - verbose: wenn True, werden Statusprints ausgegeben.
 
     Rückgabe:
-    - Liste von Symbolstrings
+    - Liste von Symbol-Strings.
 
     Side effects:
     - Netzwerkzugriff auf Wikipedia.
+    - r.raise_for_status() kann HTTP-Errors als Exception werfen.
     - Prints bei verbose=True.
     """
     if verbose:
         print("Lade S&P 500 Universe von Wikipedia …")
 
     headers = {"User-Agent": user_agent}
-    html = requests.get(WIKI_URL, headers=headers, timeout=30).text
-    tables = pd.read_html(html)
+    r = requests.get(WIKI_URL, headers=headers, timeout=30)
+    r.raise_for_status()
 
+    tables = pd.read_html(StringIO(r.text))
     df = tables[0]
+
     symbols = df["Symbol"].astype(str).tolist()
 
     if replace_dot:
