@@ -13,7 +13,11 @@ venv/
 .ipynb_checkpoints/
 
 # Exports
-exports/
+export_*.py
+.html
+
+# PDFs
+*.pdf
 
 # Python tooling
 .pytest_cache/
@@ -27,3 +31,6 @@ build/
 
 # VS Code
 .vscode/
+
+# Claude
+.claude/

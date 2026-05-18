@@ -1,0 +1,2 @@
+best_n_reservoir,best_spectral_radius,final_seed,mean_nrmse_id,std_nrmse_id,min_nrmse_id,max_nrmse_id,sparsity,input_scaling,leaking_rate,warmup,n_epochs,lr,batch_size
+400,0.98,67,0.0015777172192604405,0.0006352728021458562,0.0009251232110667887,0.0035097545199625746,0.1,1.0,1.0,100,100,0.001,256

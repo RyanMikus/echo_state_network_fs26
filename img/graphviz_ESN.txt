@@ -1,0 +1,72 @@
+// Engine: fdp
+digraph ESN {
+    graph [fontname="Helvetica" splines=line pad=0.5]
+    node [fontname="Helvetica" fontsize=13 fixedsize=true]
+    edge [fontname="Helvetica" fontsize=12 arrowsize=0.8]
+
+    node [shape=circle style=filled fillcolor="#AED6F1" width=1.0 penwidth=2]
+    u [label="u(t)" pos="1.1,0!"]
+
+    node [shape=circle style=filled fillcolor="#A9DFBF" width=1.1 penwidth=2]
+    y [label="ŷ(t+1)" pos="7.9,0!"]
+
+    node [shape=circle style=filled fillcolor="#FAD7A0" width=0.8 penwidth=1.5 label=""]
+    x1 [pos="3.3,1.2!"]
+    x2 [pos="5.7,1.2!"]
+    x3 [pos="5.7,-1.2!"]
+    x4 [pos="3.3,-1.2!"]
+
+    subgraph cluster_res {
+        label="Reservoir"
+        style=dashed
+        color="#999999"
+        fontcolor="#999999"
+        fontsize=20
+        margin=25
+
+        x1; x2; x3; x4
+
+        // Self-loops
+        x1:n -> x1:n [color="#BBBBBB"]
+        x2:n -> x2:n [color="#BBBBBB"]
+        x3:s -> x3:s [color="#BBBBBB"]
+        x4:s -> x4:s [color="#BBBBBB"]
+
+        x1->x2 [color="#BBBBBB"]
+        x2->x1 [color="#BBBBBB"]
+        x2->x3 [color="#BBBBBB"]
+        x3->x2 [color="#BBBBBB"]
+        x3->x4 [color="#BBBBBB"]
+        x4->x3 [color="#BBBBBB"]
+        x4->x1 [color="#BBBBBB"]
+        x1->x4 [color="#BBBBBB"]
+        x1->x3 [color="#BBBBBB"]
+        x3->x1 [color="#BBBBBB"]
+        x4->x2 [color="#BBBBBB"]
+        x2->x4 [color="#BBBBBB"]
+    }
+
+    u -> x1 [color="#2471A3" penwidth=1.5]
+    u -> x2 [color="#2471A3" penwidth=1.5]
+    u -> x3 [
+        taillabel="W_in"
+        color="#2471A3"
+        fontcolor="#2471A3"
+        penwidth=1.5
+        labeldistance=2.0
+        labelangle=30
+    ]
+    u -> x4 [color="#2471A3" penwidth=1.5]
+
+    x1 -> y [color="#1E8449" penwidth=1.5]
+    x2 -> y [color="#1E8449" penwidth=1.5]
+    x3 -> y [color="#1E8449" penwidth=1.5]
+    x4 -> y [
+        headlabel="W_out"
+        color="#1E8449"
+        fontcolor="#1E8449"
+        penwidth=1.5
+        labeldistance=3.0
+        labelangle=-30
+    ]
+}
